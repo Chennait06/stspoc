@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: chenna-primary
+  namespace: chenna
+  labels:
+    app: chenna-primary
+    version: '20239'
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: chenna-primary
+      version: '20239'
+  template:
+    metadata:
+      labels:
+        app: chenna-primary
+        version: '20239'
+    spec:
+      containers:
+       - name: chenna-app
+         image: acrregistry.azurecr.io/devops/chenna-20239:v3
+         imagePullPolicy: IfNotPresent
+         volumeMounts:
+         - name: chenna-volume
+           mountPath: "/chenna/chenna_2023/postgres-files/chenna_2023/conf/servercommon/services/"
+         - name: bankfusion-servicexml-1
+           mountPath: "/chenna/chenna_2023/postgres-files/chenna_2023/conf/servercommon/services/service.xml"
+           subPath: service.xml
+         ports:
+           - name: http
+             containerPort: 8080
+      volumes:
+      - name: bankfusion-servicexml-1
+        configMap:
+          name: bankfusion-servicexml-1
+          items:
+          - key: service.xml
+            path: /chenna/chenna_2023/postgres-files/chenna_2023/conf/servercommon/services/
+  volumeClaimTemplates:
+    - metadata:
+        name: chenna-volume
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: azuredisk-premium-retain
+        resources:
+          requests:
+            storage: 1Gi
