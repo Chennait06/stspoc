@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
        - name: chenna-app
-         image: acrregistry.azurecr.io/devops/chenna-20239:v3
+         image: acrregistry.azurecr.io/devops/chenna-2023:v3
          imagePullPolicy: IfNotPresent
          volumeMounts:
          - name: chenna-volume
