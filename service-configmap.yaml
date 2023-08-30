@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bankfusion-servicexml-1
+data:
+  service.xml: |
+    <?xml version="1.0" encoding="UTF-8"?>
+    <serviceManager hostID="1" replicate="false" mBeanProviderClassName="">
+    </serviceManager>
